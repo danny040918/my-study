@@ -176,3 +176,7 @@ $ docker stats web-container
 CONTAINER ID   NAME            CPU %     MEM USAGE / LIMIT     MEM %     NET I/O          BLOCK I/O         PIDS 
 ee95ae80e45c   web-container   0.00%     6.078MiB / 15.67GiB   0.04%     4.63kB / 2.5kB   20.2MB / 8.19kB   7 
 
+<img width="1282" height="610" alt="사이트 생성 캡처본(4번)" src="https://github.com/user-attachments/assets/886df94c-7616-46b3-87cb-f2b23ec7923f" />
+
+<img width="1282" height="898" alt="사이트 생성 캡처본2(4번)" src="https://github.com/user-attachments/assets/f888ca86-2abc-4de6-8a5e-7b8f6baf960a" />
+
