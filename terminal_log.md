@@ -18,7 +18,9 @@ danny0409183979@c6r1s4 my-study % cp test.txt backup_folder/
 danny0409183979@c6r1s4 my-study % mv test.txt renamed.txt
 danny0409183979@c6r1s4 my-study % rm renamed.txt
 ```
-##2. 권한 변경 실습
+## 2. 권한 변경 실습
+
+```bash
 danny0409183979@c6r1s4 my-study % touch secret.txt
 danny0409183979@c6r1s4 my-study % ls -l secret.txt
 -rw-r--r--  1 danny0409183979  danny0409183979  0  7 30 04:30 secret.txt
