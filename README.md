@@ -251,3 +251,22 @@ $ docker run -d -p 8081:80 --name my-nginx my-custom-nginx
 
 <img width="1381" height="808" alt="사이트 캡처본(7번)" src="https://github.com/user-attachments/assets/8118425f-31a1-480d-bd62-72bac3b3fd4e" />
 
+### 8. 포트 매핑 및 접속 증거
+
+앞선 7번 과정에서 `8081:80` 포트 매핑을 통해 컨테이너를 실행하였습니다.
+- **호스트 포트:** 8081
+- **컨테이너 포트:** 80
+
+웹 브라우저 접속 증거는 7번 항목의 스크린샷(`result.png`)과 동일하며, 추가로 터미널에서 `curl` 명령어를 통한 접속 응답 결과는 아래와 같습니다.
+
+**[curl 응답 결과]**
+```bash
+$ curl http://localhost:8081
+<html>
+<head>
+    <title>My Custom Nginx</title>
+</head>
+<body>
+    <p>This is a custom index.html</p>
+</body>
+</html>
