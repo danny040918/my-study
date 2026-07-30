@@ -217,3 +217,9 @@ This data is safe!
 `
 
 > **결과 분석:** `test-container1`을 완전히 삭제했음에도 불구하고, `my-data` 볼륨을 공유받은 `test-container2`에서 동일한 데이터를 확인할 수 있었습니다. 이를 통해 도커 볼륨을 활용하면 컨테이너의 생명주기와 무관하게 데이터를 안전하게 영속적(Persistent)으로 보존할 수 있음을 검증했습니다.
+
+
+<img width="1105" height="862" alt="컨태이너 실행 캡처본(6번)" src="https://github.com/user-attachments/assets/4da033cf-efd4-4dac-9251-44b184f1ed7b" />
+>
+
+
