@@ -194,3 +194,6 @@ ee95ae80e45c   web-container   0.00%     6.078MiB / 15.67GiB   0.04%     4.63kB 
 | **추가 접속 후 종료<br>(Exec)** | `docker exec -it <이름> bash` 접속 후 `exit` | 이미 실행 중인 컨테이너에 새로운 터미널을 열어 접속함. 이후 `exit`를 해도 원래 컨테이너는 꺼지지 않음. | **Up** (유지됨) |
 
 > **핵심 요약:** 도커 컨테이너의 생존 여부는 최초 실행 시점의 **'메인 프로세스(PID 1)'가 종료되었는지**에 따라 결정됩니다. `exec`로 추가 접속한 터미널을 종료해도 메인 프로세스에는 영향을 주지 않습니다.
+
+
+<img width="1105" height="862" alt="컨태이너 실행 캡처본(6번)" src="https://github.com/user-attachments/assets/4da033cf-efd4-4dac-9251-44b184f1ed7b" />
