@@ -228,3 +228,21 @@ This data is safe!
 >
 
 
+cat << 'EOF' >> README.md
+
+### 7. 기존 Dockerfile 기반 커스텀 이미지 제작
+
+- **어떤 "기존 베이스"를 선택했는지:** 
+  - `nginx:latest` (웹 서버 베이스 이미지 활용)
+- **내가 적용한 커스텀 포인트 각각의 목적:** 
+  - 기본 Nginx 화면 대신, 내가 직접 작성한 커스텀 HTML 파일(`index.html`)을 출력하도록 정적 콘텐츠를 교체함.
+
+**[빌드 및 실행 명령]**
+```bash
+# 1. 이미지 빌드
+$ docker build -t my-custom-nginx .
+
+# 2. 컨테이너 실행 (기존 8080 포트 충돌로 인해 8081:80 포트로 매핑하여 실행)
+$ docker run -d -p 8081:80 --name my-nginx my-custom-nginx
+
+
