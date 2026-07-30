@@ -176,6 +176,8 @@ $ docker stats web-container
 CONTAINER ID   NAME            CPU %     MEM USAGE / LIMIT     MEM %     NET I/O          BLOCK I/O         PIDS 
 ee95ae80e45c   web-container   0.00%     6.078MiB / 15.67GiB   0.04%     4.63kB / 2.5kB   20.2MB / 8.19kB   7 
 
+
+
 ### 📌 [실습 6] 컨테이너 종료 및 유지 방식의 차이점 분석
 
 | 구분 | 사용 명령어 / 단축키 | 동작 방식 및 특징 | 컨테이너 최종 상태 |
