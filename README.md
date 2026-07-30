@@ -245,4 +245,9 @@ $ docker build -t my-custom-nginx .
 # 2. 컨테이너 실행 (기존 8080 포트 충돌로 인해 8081:80 포트로 매핑하여 실행)
 $ docker run -d -p 8081:80 --name my-nginx my-custom-nginx
 
+```
+<img width="1363" height="849" alt="이미지  빌드 캡처본(7번)" src="https://github.com/user-attachments/assets/fb99cff3-8425-4e7b-b52c-1e1b2ff96ade" />
+
+
+<img width="1381" height="808" alt="사이트 캡처본(7번)" src="https://github.com/user-attachments/assets/8118425f-31a1-480d-bd62-72bac3b3fd4e" />
 
