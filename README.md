@@ -180,10 +180,3 @@ ee95ae80e45c   web-container   0.00%     6.078MiB / 15.67GiB   0.04%     4.63kB 
 
 <img width="1282" height="898" alt="사이트 생성 캡처본2(4번)" src="https://github.com/user-attachments/assets/f888ca86-2abc-4de6-8a5e-7b8f6baf960a" />
 
-
-## [컨테이너 종료와 유지의 차이점 요약]
-**컨테이너 종료 (Attach 상태에서 exit)**: docker run -it로 접속한 상태에서 exit를 입력하면, 컨테이너의 메인 프로세스(bash)가 종료되면서 컨테이너 자체도 완전히 멈춥니다(Exited 상태).
-**컨테이너 유지 (Detach)**: 접속 상태에서 Ctrl + P, Ctrl + Q를 순서대로 누르면, 터미널만 빠져나오고 컨테이너는 백그라운드에서 계속 실행됩니다(Up 상태).
-**추가 접속 (Exec)**: docker exec -it <컨테이너명> bash를 사용하면 이미 실행 중인 컨테이너에 새로운 터미널을 열어 접속합니다. 이때 exit로 빠져나와도 원래 컨테이너는 종료되지 않고 계속 유지됩니다.
-
-<img width="1105" height="862" alt="컨태이너 실행 캡처본(6번)" src="https://github.com/user-attachments/assets/7211f47a-ee7d-4761-aca5-0dc375565d05" />
