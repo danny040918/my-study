@@ -1,4 +1,3 @@
-<img width="1282" height="610" alt="사이트 생성 캡처본(4번)" src="https://github.com/user-attachments/assets/db9cc50d-82ce-4f3a-a616-9d0c53ee7bec" />
 # 🚀 My Study Project
 
 나의 첫 번째 Docker 개발 환경 구축 및 GitHub 연동 프로젝트입니다.
