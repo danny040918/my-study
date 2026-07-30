@@ -200,7 +200,7 @@ ee95ae80e45c   web-container   0.00%     6.078MiB / 15.67GiB   0.04%     4.63kB 
 
 컨테이너가 삭제되어도 데이터가 유지되는지 확인하기 위해 Docker Volume 실습을 진행했습니다.
 
-**1. 볼륨 생성 및 첫 번째 컨테이너에 연결**
+** 1. 볼륨 생성 및 첫 번째 컨테이너에 연결**
 `bash
 $ docker volume create my-data
 $ docker run -it --name test-container1 -v my-data:/data ubuntu
@@ -208,7 +208,7 @@ root@container:/# echo "This data is safe!" > /data/hello.txt
 root@container:/# exit
 `
 
-**2. 컨테이너 삭제 후 새로운 컨테이너에 같은 볼륨 연결**
+** 2. 컨테이너 삭제 후 새로운 컨테이너에 같은 볼륨 연결**
 `bash
 $ docker rm test-container1
 $ docker run -it --name test-container2 -v my-data:/data ubuntu
