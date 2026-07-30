@@ -194,3 +194,26 @@ ee95ae80e45c   web-container   0.00%     6.078MiB / 15.67GiB   0.04%     4.63kB 
 | **추가 접속 후 종료<br>(Exec)** | `docker exec -it <이름> bash` 접속 후 `exit` | 이미 실행 중인 컨테이너에 새로운 터미널을 열어 접속함. 이후 `exit`를 해도 원래 컨테이너는 꺼지지 않음. | **Up** (유지됨) |
 
 > **핵심 요약:** 도커 컨테이너의 생존 여부는 최초 실행 시점의 **'메인 프로세스(PID 1)'가 종료되었는지**에 따라 결정됩니다. `exec`로 추가 접속한 터미널을 종료해도 메인 프로세스에는 영향을 주지 않습니다.
+
+
+### 📌 [실습 7] Docker 볼륨 영속성 검증
+
+컨테이너가 삭제되어도 데이터가 유지되는지 확인하기 위해 Docker Volume 실습을 진행했습니다.
+
+**1. 볼륨 생성 및 첫 번째 컨테이너에 연결**
+`bash
+$ docker volume create my-data
+$ docker run -it --name test-container1 -v my-data:/data ubuntu
+root@container:/# echo "This data is safe!" > /data/hello.txt
+root@container:/# exit
+`
+
+**2. 컨테이너 삭제 후 새로운 컨테이너에 같은 볼륨 연결**
+`bash
+$ docker rm test-container1
+$ docker run -it --name test-container2 -v my-data:/data ubuntu
+root@container:/# cat /data/hello.txt
+This data is safe!
+`
+
+> **결과 분석:** `test-container1`을 완전히 삭제했음에도 불구하고, `my-data` 볼륨을 공유받은 `test-container2`에서 동일한 데이터를 확인할 수 있었습니다. 이를 통해 도커 볼륨을 활용하면 컨테이너의 생명주기와 무관하게 데이터를 안전하게 영속적(Persistent)으로 보존할 수 있음을 검증했습니다.
