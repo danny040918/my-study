@@ -1,8 +1,3 @@
-최종33
-
-==========
-
-
 # 🚀 My Study Project
 
 나의 첫 번째 Docker 개발 환경 구축 및 GitHub 연동 프로젝트입니다.
