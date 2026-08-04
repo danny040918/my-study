@@ -294,3 +294,17 @@ $ curl http://localhost:8081
   docker run -d -p 8082:80 -v $(pwd)/html_data:/usr/share/nginx/html --name volume-test nginx
 
 ```
+
+## 10. Git 연동 및 트러블슈팅 (Troubleshooting)
+
+프로젝트를 진행하며 GitHub 연동 및 버전 관리 과정에서 겪은 문제와 해결 방법입니다.
+
+### 1) GitHub 토큰(PAT) 인증 적용
+- **상황:** GitHub의 비밀번호 인증 지원 종료로 인해 터미널에서 `git push` 시 인증 에러가 발생했습니다.
+- **해결:** GitHub Developer Settings에서 **Personal Access Token(PAT)**을 발급받아 비밀번호 대신 사용하여 안전하게 원격 저장소 인증을 완료했습니다.
+
+### 2) Git 충돌(Conflict) 해결 및 Rebase 활용
+- **상황:** 원격 저장소(GitHub)의 변경 사항과 로컬 저장소의 커밋이 엇갈려 `git push`가 거부(Rejected)되는 상황이 발생했습니다.
+- **해결:** 
+  - 지저분한 Merge 커밋을 남기지 않고 히스토리를 깔끔하게 유지하기 위해 `git pull --rebase origin main` 명령어를 사용했습니다.
+  - 충돌(Conflict)이 발생한 파일에서 `<<<<<<<`, `=======`, `>>>>>>>` 마커를 확인하여 코드를 알맞게 수정한 뒤, `git add`와 `git rebase --continue`를 통해 성공적으로 병합을 완료했습니다.
