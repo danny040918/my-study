@@ -283,5 +283,14 @@ $ curl http://localhost:8081
     <p>This is a custom index.html</p>
 </body>
 </html>
- 
+```
 
+
+## 4. Docker Volume 실습 (데이터 영속성)
+- **목적**: 컨테이너가 삭제되어도 데이터를 안전하게 보존하고, 로컬(호스트)과 컨테이너 간의 파일을 실시간으로 동기화합니다.
+- **실행 명령어**: 
+
+```bush
+  docker run -d -p 8082:80 -v $(pwd)/html_data:/usr/share/nginx/html --name volume-test nginx
+
+```
