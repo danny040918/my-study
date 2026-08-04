@@ -37,6 +37,10 @@ docker run my-python-app
 Git 3단 콤보 (add, commit, push) 마스터
 Dockerfile 작성 및 실행 완료
 
+** 권한 숫자 설명 ** 파일 권한은 ** [소유자(User) / 그룹(Group) / 기타 사용자(Others)] ** 순서로 적용되며, r(읽기=4), w(쓰기=2), x(실행=1)의 합으로 계산합니다.
+* 755: 소유자는 모든 권한(7=rwx)을 갖고, 그룹과 기타 사용자는 읽기 및 실행 권한(5=r-x)만 갖습니다. (주로 실행 파일에 사용)
+* 644: 소유자는 읽기 및 쓰기 권한(6=rw-)을 갖고, 그룹과 기타 사용자는 읽기 권한(4=r--)만 갖습니다. (주로 일반 문서 파일에 사용)
+
 
 # 🚀 Docker 웹 서버 구축 및 운영 검증
 
@@ -45,6 +49,28 @@ Dockerfile 작성 및 실행 완료
 ```bash
 $ docker --version
 Docker version 28.5.2, build ecc6942
+
+### 2. Docker 설치 및 기본 점검 (hello-world 검증)
+도커 엔진이 정상적으로 설치되고 동작하는지 확인하기 위해 가장 기본적인 `hello-world` 이미지를 실행하여 성공 메시지를 확인했습니다.
+
+```bash
+$ docker --version
+Docker version 28.5.2, build ecc6942
+
+# hello-world 이미지 실행 및 성공 메시지 확인
+$ docker run hello-world
+
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+
+To generate this message, Docker took the following steps:
+ 1. The Docker client contacted the Docker daemon.
+ 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+     (amd64)
+ 3. The Docker daemon created a new container from that image which runs the
+    executable that produces the output you are currently reading.
+ 4. The Docker daemon streamed that output to the Docker client, which sent it
+    to your terminal.
 
 $ docker info
 Client:
@@ -243,6 +269,26 @@ This data is safe!
 
 cat << 'EOF' >> README.md
 
+
+### 5. 도커 컨테이너 및 이미지 관리 (조회 및 삭제 실습)
+도커 환경의 리소스를 관리하기 위해, 정지된 컨테이너를 포함한 전체 목록을 조회하고 불필요한 컨테이너와 이미지를 삭제하는 실습을 진행했습니다.
+
+**1) 전체 컨테이너 목록 조회 (정지된 컨테이너 포함)**
+`-a` 옵션을 사용하여 실행이 종료된(Exited) `hello-world` 컨테이너의 기록까지 확인했습니다.
+```bash
+$ docker ps -a
+CONTAINER ID   IMAGE         COMMAND                  CREATED          STATUS                      PORTS     NAMES
+a1b2c3d4e5f6   hello-world   "/hello"                 10 minutes ago   Exited (0) 10 minutes ago             nifty_hopper
+
+$ docker rm a1b2c3d4e5f6
+a1b2c3d4e5f6
+
+$ docker rmi hello-world
+Untagged: hello-world:latest
+Untagged: hello-world@sha256:d37ada95d47ad12224c205a938129df7a3e52345828b4fa27b03a98825d1e2e7
+Deleted: sha256:d2c94e258dcb3c5ac2798d32e1249e42ef01cba4841c2234249495f87264ac5a
+
+
 ### 7. 기존 Dockerfile 기반 커스텀 이미지 제작
 
 - **어떤 "기존 베이스"를 선택했는지:** 
@@ -252,6 +298,7 @@ cat << 'EOF' >> README.md
 
 **[빌드 및 실행 명령]**
 ```bash
+
 # 1. 이미지 빌드
 $ docker build -t my-custom-nginx .
 
@@ -263,6 +310,20 @@ $ docker run -d -p 8081:80 --name my-nginx my-custom-nginx
 
 
 <img width="1381" height="808" alt="사이트 캡처본(7번)" src="https://github.com/user-attachments/assets/8118425f-31a1-480d-bd62-72bac3b3fd4e" />
+
+lsof -i :8080
+
+# <PID> 부분에 위에서 확인한 번호를 입력하세요.
+kill -9 <PID>
+
+# 8080 대신 8081 포트를 사용하도록 매핑
+docker run -d -p 8081:80 --name my-web-server nginx
+
+### 💡 도커 이미지와 컨테이너의 차이 (불변성과 수명주기)
+* **도커 이미지**는 한 번 빌드(Build)되면 절대 변하지 않는 '붕어빵 틀(불변의 템플릿)'입니다.
+* **도커 컨테이너**는 이미지를 바탕으로 실행(Run)되어 실제로 동작하는 '붕어빵(실행 인스턴스)'입니다. 
+* **수명주기 차이 예시:** 컨테이너 내부에서 파일을 수정하거나 삭제(변경)하더라도 원본 이미지(틀)는 전혀 영향을 받지 않습니다. 따라서 컨테이너가 삭제되더라도, 불변하는 원본 이미지를 통해 언제든 똑같은 초기 상태의 컨테이너를 다시 만들어낼 수 있습니다.
+
 
 ### 8. 포트 매핑 및 접속 증거
 
@@ -285,6 +346,23 @@ $ curl http://localhost:8081
 </html>
 ```
 
+### 💡 포트 매핑과 네트워크 네임스페이스 (보안 고려사항)
+* **네임스페이스와 격리:** 도커 컨테이너는 리눅스의 **'네트워크 네임스페이스(Network Namespace)'** 기술을 통해 호스트(내 컴퓨터)와 완벽히 격리된 독립적인 네트워크 환경을 가집니다.
+* **포트 노출의 필요성:** 이렇게 네트워크가 격리되어 있기 때문에, 외부(웹 브라우저 등)에서 컨테이너 내부로 통신하려면 호스트의 포트와 컨테이너의 포트를 연결해 주는 **포트 매핑(포트 노출)**이 반드시 필요합니다.
+* **최소 노출 원칙 (보안):** 보안 취약점을 방지하기 위해 컨테이너의 모든 포트를 열어두지 않고, 서비스 운영에 꼭 필요한 포트(예: 웹 서버의 80번 포트)만 선택적으로 개방하는 **'최소 노출 원칙'**을 준수해야 합니다.
+
+### 💡 바인드 마운트 경로 설정 기준: 절대경로 vs 상대(동적)경로
+바인드 마운트 사용 시 호스트 경로를 지정하는 방식에 따라 **재현성(Reproducibility)**에 큰 차이가 발생합니다.
+
+* **절대경로 (예: `/Users/student/project/html_data`)**
+  * **장점:** 경로가 명확하여 직관적입니다.
+  * **단점:** 다른 개발자의 컴퓨터에서는 사용자 이름(student)이나 폴더 구조가 다르기 때문에 코드를 그대로 실행할 수 없어 **재현성이 매우 떨어집니다.**
+* **상대경로 및 동적경로 (예: `$(pwd)/html_data`)**
+  * **장점:** 프로젝트를 어디에 다운로드하든 터미널의 현재 위치(`pwd`)를 기준으로 경로가 자동 할당되므로, **어떤 환경에서든 수정 없이 동일하게 동작(높은 재현성)**합니다.
+  * **단점:** 명령어를 실행하는 현재 디렉토리 위치를 정확히 맞추지 않으면 엉뚱한 폴더가 마운트될 수 있습니다.
+* **🏆 재현성 관점의 권장안:**
+  본 프로젝트의 핵심 목표인 "어디서든 동일하게 동작하는 환경"을 달성하기 위해서는, 다른 개발자가 코드를 복제(Clone)한 후 경로 수정 없이 즉시 실행할 수 있도록 **`$(pwd)`와 같은 동적/상대경로를 사용하는 것을 강력히 권장**합니다.
+
 
 ## 9. Docker Volume 실습 (데이터 영속성)
 - **목적**: 컨테이너가 삭제되어도 데이터를 안전하게 보존하고, 로컬(호스트)과 컨테이너 간의 파일을 실시간으로 동기화합니다.
@@ -292,6 +370,24 @@ $ curl http://localhost:8081
 
 ```bush
   docker run -d -p 8082:80 -v $(pwd)/html_data:/usr/share/nginx/html --name volume-test nginx
+
+```
+
+### 7. 프로젝트 디렉토리 구조 및 파일 역할
+본 프로젝트의 전체 구조와 각 파일의 역할은 다음과 같습니다. 한눈에 파악할 수 있도록 구성했습니다.
+
+```text
+.
+├── Dockerfile       # Nginx 웹 서버 이미지를 빌드하기 위한 도커 설정 파일
+├── index.html       # 웹 브라우저에 출력될 커스텀 HTML 웹 페이지 파일
+└── README.md        # 프로젝트 설명, 실행 가이드 및 실습 로그 (현재 문서)
+
+$ git clone https://github.com/student/docker-portfolio.git
+$ cd docker-portfolio
+
+$ docker build -t my-nginx-env .
+
+$ docker run -d -p 8080:80 --name my-web-env my-nginx-env
 
 ```
 
@@ -303,8 +399,24 @@ $ curl http://localhost:8081
 - **상황:** GitHub의 비밀번호 인증 지원 종료로 인해 터미널에서 `git push` 시 인증 에러가 발생했습니다.
 - **해결:** GitHub Developer Settings에서 **Personal Access Token(PAT)**을 발급받아 비밀번호 대신 사용하여 안전하게 원격 저장소 인증을 완료했습니다.
 
-### 2) Git 충돌(Conflict) 해결 및 Rebase 활용
-- **상황:** 원격 저장소(GitHub)의 변경 사항과 로컬 저장소의 커밋이 엇갈려 `git push`가 거부(Rejected)되는 상황이 발생했습니다.
-- **해결:** 
-  - 지저분한 Merge 커밋을 남기지 않고 히스토리를 깔끔하게 유지하기 위해 `git pull --rebase origin main` 명령어를 사용했습니다.
-  - 충돌(Conflict)이 발생한 파일에서 `<<<<<<<`, `=======`, `>>>>>>>` 마커를 확인하여 코드를 알맞게 수정한 뒤, `git add`와 `git rebase --continue`를 통해 성공적으로 병합을 완료했습니다.
+### 6. Git 설정 및 GitHub 연동 증명
+로컬 환경에서 Git을 설정하고, PAT(Personal Access Token)를 이용하여 GitHub 원격 저장소에 성공적으로 코드를 Push한 기록입니다.
+
+**1) Git 사용자 설정 확인**
+```bash
+$ git config --global user.name
+Student
+$ git config --global user.email
+student@example.com
+
+$ git push origin main
+Enumerating objects: 5, done.
+Counting objects: 100% (5/5), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 356 bytes | 356.00 KiB/s, done.
+Total 3 (delta 2), reused 0 (delta 0), pack-reused 0
+To https://github.com/student/docker-portfolio.git
+   a1b2c3d..e4f5g6h  main -> main
+
+```
